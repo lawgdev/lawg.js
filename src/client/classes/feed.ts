@@ -9,12 +9,30 @@ export default class Feed {
   private readonly feedName: string;
   private readonly latestLogId: string | null;
 
-  constructor(token: string, project: string, feedName: string, ua: string | undefined) {
+  constructor(
+    token: string,
+    project: string,
+    feedName: string,
+    ua: string | undefined
+  ) {
     this.token = token;
     this.project = project;
     this.ua = ua;
     this.feedName = feedName;
     this.latestLogId = null;
+  }
+
+  /**
+   * Get all logs of a feed
+   * @returns Response Data
+   */
+  public async logs(): Promise<void> {
+    return await sendAPICall(
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
+      this.ua,
+      "get",
+      this.token
+    );
   }
 
   /**
@@ -33,17 +51,20 @@ export default class Feed {
   }
 
   /**
-   * Edit an existing log on Lawg using the latest log ID
+   * Edit an existing log on Lawg using an ID param or latest log ID
+   * @param id
    * @param options
    * @returns Response Data
    */
-  public async editLog(options: UpdateLog): Promise<void> {
-    if (this.latestLogId === null) {
+  public async editLog(id: string, options: UpdateLog): Promise<void> {
+    const determineId = id === "latest" ? this.latestLogId : id;
+
+    if (id === "latest" && this.latestLogId === null) {
       throw new Error("No log ID available for editing. Create a log first.");
     }
 
     return await sendAPICall(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${this.latestLogId}`,
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${determineId}`,
       this.ua,
       "patch",
       this.token,
@@ -52,20 +73,23 @@ export default class Feed {
   }
 
   /**
-   * Delete an existing log on Lawg using the latest log ID
+   * Delete an existing log on Lawg using an ID param or latest log ID
+   * @param id
    * @param options
    * @returns Response Data
    */
-  public async deleteLog(): Promise<void> {
-    if (this.latestLogId === null) {
+  public async deleteLog(id: string): Promise<void> {
+    const determineId = id === "latest" ? this.latestLogId : id;
+
+    if (id === "latest" && this.latestLogId === null) {
       throw new Error("No log ID available for editing. Create a log first.");
     }
 
     return await sendAPICall(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${this.latestLogId}`,
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${determineId}`,
       this.ua,
       "delete",
-      this.token,
+      this.token
     );
   }
 }
