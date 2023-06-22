@@ -6,11 +6,11 @@ const lawg = new Lawg({
   project: "sm",
 });
 
-const createLog = async () => {
-  await lawg.feed("bug-reports").log({
-    title: "hello",
-    description: "just testing out lawg!",
+const createInsight = async () => {
+  await lawg.insight({
+    title: "Users Joined",
+    value: 250,
   });
 };
 
-createLog();
+createInsight();

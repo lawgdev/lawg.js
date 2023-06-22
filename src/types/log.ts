@@ -1,5 +1,4 @@
 export default interface CreateLog {
-  feed?: string;
   title: string;
   description?: string;
   emoji?: string;

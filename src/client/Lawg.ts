@@ -1,7 +1,6 @@
-import axios from "axios";
-import CreateLog from "../types/create";
 import { LAWG_API_URL } from "../lib/constants";
-import HTTPResponseError from "../lib/error";
+import { CreateInsight } from "../types/insight";
+import sendAPICall from "../utils/sendAPICall";
 import Feed from "./classes/Feed";
 
 export default class Lawg {
@@ -17,33 +16,17 @@ export default class Lawg {
     return new Feed(this.token, this.project, feed_name);
   }
 
-   /**
-   * Create a new log on Lawg
+  /**
+   * Create a new insight on Lawg
    * @param options
    * @returns true if successful
    */
-  public async create(options: CreateLog): Promise<boolean> {
-    const { feed, ...data } = options;
-
-    await axios({
-      url: `${LAWG_API_URL}/projects/${this.project}/feeds/${feed}/logs`,
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.token,
-      },
-      data: {
-        ...data,
-      },
-    }).then((response) => {
-      if (response.status !== 200) {
-        throw new HTTPResponseError(
-          response.status,
-          response.statusText,
-          response.data
-        );
-      }
-    });
+  public async insight(options: CreateInsight): Promise<boolean> {
+    await sendAPICall(
+      `${LAWG_API_URL}/projects/${this.project}/insights`,
+      this.token,
+      options
+    );
 
     return true;
   }

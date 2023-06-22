@@ -1,7 +1,6 @@
-import axios from "axios";
 import { LAWG_API_URL } from "../../lib/constants";
-import HTTPResponseError from "../../lib/error";
-import CreateLog from "../../types/create";
+import CreateLog from "../../types/log";
+import sendAPICall from "../../utils/sendAPICall";
 
 export default class Feed {
   private readonly token: string;
@@ -14,30 +13,18 @@ export default class Feed {
     this.feedName = feedName;
   }
 
-  public async create(options: CreateLog): Promise<boolean> {
-    const { title, description, ...data } = options;
-
-    const response = await axios.post(
+  /**
+   * Create a new log on Lawg
+   * @param options
+   * @returns true if successful
+   */
+  public async log(options: CreateLog): Promise<boolean> {
+    await sendAPICall(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
-      {
-        title,
-        description,
-        ...data,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: this.token,
-        },
-      }
+      this.token,
+      options
     );
-    if (response.status !== 200) {
-      throw new HTTPResponseError(
-        response.status,
-        response.statusText,
-        response.data
-      );
-    }
+
     return true;
   }
 }
