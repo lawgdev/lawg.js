@@ -1,5 +1,5 @@
 import "dotenv/config";
-import Lawg from "../../../src/client/Lawg";
+import Lawg from "../../../src/client/lawg";
 
 const lawg = new Lawg({
   token: process.env.LAWG_TOKEN,

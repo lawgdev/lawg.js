@@ -1,7 +1,7 @@
 import { LAWG_API_URL } from "../lib/constants";
 import { CreateInsight } from "../types/insight";
 import sendAPICall from "../utils/sendAPICall";
-import Feed from "./classes/Feed";
+import Feed from "./classes/feed";
 
 export default class Lawg {
   private readonly token: string;
