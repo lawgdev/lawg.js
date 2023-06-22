@@ -1,5 +1,5 @@
 import { LAWG_API_URL } from "../../lib/constants";
-import CreateLog, { UpdateLog } from "../../types/log";
+import { CreateLog, UpdateLog } from "../../types/log";
 import sendAPICall from "../../utils/sendAPICall";
 
 export default class Feed {
@@ -20,7 +20,7 @@ export default class Feed {
    * @param options
    * @returns Response Data
    */
-  public async log(options: CreateLog): Promise<boolean> {
+  public async log(options: CreateLog): Promise<void> {
     return await sendAPICall(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
       "post",
@@ -34,7 +34,7 @@ export default class Feed {
    * @param options
    * @returns Response Data
    */
-  public async editLog(options: UpdateLog): Promise<boolean> {
+  public async editLog(options: UpdateLog): Promise<void> {
     if (this.latestLogId === null) {
       throw new Error("No log ID available for editing. Create a log first.");
     }
@@ -52,7 +52,7 @@ export default class Feed {
    * @param options
    * @returns Response Data
    */
-  public async deleteLog(): Promise<boolean> {
+  public async deleteLog(): Promise<void> {
     if (this.latestLogId === null) {
       throw new Error("No log ID available for editing. Create a log first.");
     }

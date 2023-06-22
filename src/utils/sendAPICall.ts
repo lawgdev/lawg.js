@@ -1,14 +1,14 @@
 import axios from "axios";
 import HTTPResponseError from "../lib/error";
 import { CreateInsight } from "../types/insight";
-import CreateLog, { UpdateLog } from "../types/log";
+import { CreateLog, UpdateLog } from "../types/log";
 
 export default async function sendAPICall(
   url: string,
   method: 'get' | 'post' | 'patch' | 'delete',
   token: string,
   data?: CreateLog | CreateInsight | UpdateLog
-) {
+): Promise<void> {
   return await axios({
     url,
     method,

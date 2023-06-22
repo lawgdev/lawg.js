@@ -18,7 +18,7 @@ export interface UpdateLog {
 /**
  * Options for creating a Log
  **/
-export default interface CreateLog {
+export interface CreateLog {
   /**
    * Log Title (Required)
    * example: "Order Created"
