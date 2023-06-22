@@ -19,11 +19,12 @@ export default class Lawg {
   /**
    * Create a new insight on Lawg
    * @param options
-   * @returns true if successful
+   * @returns Response Data
    */
   public async insight(options: CreateInsight): Promise<boolean> {
     await sendAPICall(
       `${LAWG_API_URL}/projects/${this.project}/insights`,
+      'post',
       this.token,
       options
     );

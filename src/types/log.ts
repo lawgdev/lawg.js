@@ -1,8 +1,23 @@
 export type Tags = { [key: string]: number };
 
 /**
- * Options for creating a Lawg Log
-**/
+ * Options for updating a Log
+ * Identical to creating a log except all fields are optional
+ **/
+export interface UpdateLog {
+  title: string;
+  description: string;
+  emoji: string;
+  timestamp?: string;
+  metadata?: {
+    tags?: Tags;
+  };
+  notify?: boolean;
+}
+
+/**
+ * Options for creating a Log
+ **/
 export default interface CreateLog {
   /**
    * Log Title (Required)
