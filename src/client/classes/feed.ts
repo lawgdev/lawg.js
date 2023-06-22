@@ -5,12 +5,14 @@ import sendAPICall from "../../utils/sendAPICall";
 export default class Feed {
   private readonly token: string;
   private readonly project: string;
+  private readonly ua: string | undefined;
   private readonly feedName: string;
   private readonly latestLogId: string | null;
 
-  constructor(token: string, project: string, feedName: string) {
+  constructor(token: string, project: string, feedName: string, ua: string | undefined) {
     this.token = token;
     this.project = project;
+    this.ua = ua;
     this.feedName = feedName;
     this.latestLogId = null;
   }
@@ -23,6 +25,7 @@ export default class Feed {
   public async log(options: CreateLog): Promise<void> {
     return await sendAPICall(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
+      this.ua,
       "post",
       this.token,
       options
@@ -41,6 +44,7 @@ export default class Feed {
 
     return await sendAPICall(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${this.latestLogId}`,
+      this.ua,
       "patch",
       this.token,
       options
@@ -59,8 +63,9 @@ export default class Feed {
 
     return await sendAPICall(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${this.latestLogId}`,
+      this.ua,
       "delete",
-      this.token
+      this.token,
     );
   }
 }
