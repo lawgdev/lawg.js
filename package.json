@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "tsup --format cjs,esm --dts",
-    "release": "pnpm run build && changeset publish"
+    "release": "yarn run build && changeset publish"
   },
   "repository": {
     "type": "git",
