@@ -1,6 +1,6 @@
 {
-  "name": "@lawg/js",
-  "version": "1.0.0",
+  "name": "@lawgdev/js",
+  "version": "1.0.3",
   "description": "Lawg JS SDK",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
