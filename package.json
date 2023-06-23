@@ -8,9 +8,6 @@
   "dependencies": {
     "axios": "^1.4.0"
   },
-  "directories": {
-    "example": "examples"
-  },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
     "tsup": "^7.0.0",
