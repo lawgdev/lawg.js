@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { LAWG_API_URL } from "../lib/constants";
 import { CreateInsight, UpdateInsight } from "../types/insight";
 import request from "../utils/request";
@@ -31,7 +32,7 @@ export default class Lawg {
    * @param options
    * @returns Response Data
    */
-  public async insight(options: CreateInsight): Promise<void> {
+  public async insight(options: CreateInsight): Promise<AxiosResponse> {
     return await request(`${LAWG_API_URL}/projects/${this.project}/insights`, {
       method: "post",
       token: this.token,
@@ -44,14 +45,16 @@ export default class Lawg {
    * @param options
    * @returns Response Data
    */
-  public async setInsight(options: UpdateInsight): Promise<void> {
+  public async setInsight(options: UpdateInsight): Promise<AxiosResponse> {
     return await request(
       `${LAWG_API_URL}/projects/${this.project}/insights/${options.id}`,
       {
         method: "patch",
         token: this.token,
         data: {
-          set: options.set,
+          value: {
+            set: options.set,
+          },
         },
       }
     );
@@ -62,14 +65,16 @@ export default class Lawg {
    * @param options
    * @returns Response Data
    */
-  public async incInsight(options: UpdateInsight): Promise<void> {
+  public async incInsight(options: UpdateInsight): Promise<AxiosResponse> {
     return await request(
       `${LAWG_API_URL}/projects/${this.project}/insights/${options.id}`,
       {
         method: "patch",
         token: this.token,
         data: {
-          increment: options.increment,
+          value: {
+            increment: options.increment,
+          },
         },
       }
     );
@@ -80,7 +85,7 @@ export default class Lawg {
    * @param options
    * @returns Response Data
    */
-  public async deleteInsight(options: { id: string }): Promise<void> {
+  public async deleteInsight(options: { id: string }): Promise<AxiosResponse> {
     return await request(
       `${LAWG_API_URL}/projects/${this.project}/insights/${options.id}`,
       {

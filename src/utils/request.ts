@@ -1,17 +1,17 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { CreateLog, UpdateLog } from "../types/log";
-import { CreateInsight, UpdateInsight } from "../types/insight";
+import { CreateInsight } from "../types/insight";
 
 interface Options {
   ua?: string | undefined;
   method: "get" | "post" | "patch" | "delete";
   token: string;
-  data?: CreateLog | UpdateLog | CreateInsight | UpdateInsight;
+  data?: CreateLog | UpdateLog | CreateInsight | { value: { set?: string | number, increment?: number} };
 }
 export default async function request(
   url: string,
   options: Options
-): Promise<void> {
+): Promise<AxiosResponse> {
   return await axios({
     url,
     method: options.method,

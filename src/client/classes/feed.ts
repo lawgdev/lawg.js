@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { LAWG_API_URL } from "../../lib/constants";
 import { CreateLog, UpdateLog } from "../../types/log";
 import request from "../../utils/request";
@@ -7,7 +8,6 @@ export default class Feed {
   private readonly project: string;
   private readonly ua: string | undefined;
   private readonly feedName: string;
-  private readonly latestLogId: string | null;
 
   constructor(
     token: string,
@@ -19,14 +19,13 @@ export default class Feed {
     this.project = project;
     this.ua = ua;
     this.feedName = feedName;
-    this.latestLogId = null;
   }
 
   /**
    * Get all logs of a feed
    * @returns Response Data
    */
-  public async fetchLogs(): Promise<void> {
+  public async fetchLogs(): Promise<AxiosResponse> {
     return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
       {
@@ -41,11 +40,11 @@ export default class Feed {
    * @param options
    * @returns Response Data
    */
-  public async log(options: CreateLog): Promise<void> {
+  public async log(options: CreateLog): Promise<AxiosResponse> {
     return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
       {
-        ua: this.ua,
+        ua: options.metadata?.ua ?? this.ua,
         method: "post",
         token: this.token,
         data: options,
@@ -58,7 +57,7 @@ export default class Feed {
    * @param options
    * @returns Response Data
    */
-  public async fetchLog(options: { id: string }): Promise<void> {
+  public async fetchLog(options: { id: string }): Promise<AxiosResponse> {
     return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${options.id}`,
       {
@@ -74,16 +73,11 @@ export default class Feed {
    * @param options
    * @returns Response Data
    */
-  public async editLog(options: UpdateLog): Promise<void> {
+  public async editLog(options: UpdateLog): Promise<AxiosResponse> {
     const { id, ...data } = options;
-    const determineId = id === "latest" ? this.latestLogId : id;
-
-    if (id === "latest" && this.latestLogId === null) {
-      throw new Error("No log ID available for editing. Create a log first.");
-    }
 
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${determineId}`,
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${id}`,
       {
         method: "patch",
         token: this.token,
@@ -98,15 +92,9 @@ export default class Feed {
    * @param options
    * @returns Response Data
    */
-  public async deleteLog(options: { id: string }): Promise<void> {
-    const determineId = options.id === "latest" ? this.latestLogId : options.id;
-
-    if (options.id === "latest" && this.latestLogId === null) {
-      throw new Error("No log ID available for editing. Create a log first.");
-    }
-
+  public async deleteLog(options: { id: string }): Promise<AxiosResponse> {
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${determineId}`,
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${options.id}`,
       {
         method: "delete",
         token: this.token,

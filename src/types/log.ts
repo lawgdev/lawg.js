@@ -1,4 +1,4 @@
-export type Tags = { [key: string]: number };
+export type Tags = { [key: string]: string | number };
 
 /**
  * Options for updating a Log
@@ -6,9 +6,9 @@ export type Tags = { [key: string]: number };
  **/
 export interface UpdateLog {
   id?: string;
-  title: string;
-  description: string;
-  emoji: string;
+  title?: string;
+  description?: string;
+  emoji?: string;
   timestamp?: string;
   metadata?: {
     tags?: Tags;

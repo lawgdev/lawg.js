@@ -1,6 +1,6 @@
 /**
  * Options for creating a Lawg Insight
-**/
+ **/
 export interface CreateInsight {
   /**
    * Insight Title (Required)
