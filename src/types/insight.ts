@@ -31,6 +31,7 @@ export interface CreateInsight {
 
 export interface UpdateInsight {
   id?: string;
+  emoji?: string;
   set?: string | number;
   increment?: number;
 }
