@@ -5,6 +5,7 @@ export type Tags = { [key: string]: number };
  * Identical to creating a log except all fields are optional
  **/
 export interface UpdateLog {
+  id?: string;
   title: string;
   description: string;
   emoji: string;

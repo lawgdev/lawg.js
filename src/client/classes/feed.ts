@@ -1,6 +1,6 @@
 import { LAWG_API_URL } from "../../lib/constants";
 import { CreateLog, UpdateLog } from "../../types/log";
-import sendAPICall from "../../utils/sendAPICall";
+import request from "../../utils/request";
 
 export default class Feed {
   private readonly token: string;
@@ -26,70 +26,91 @@ export default class Feed {
    * Get all logs of a feed
    * @returns Response Data
    */
-  public async logs(): Promise<void> {
-    return await sendAPICall(
+  public async fetchLogs(): Promise<void> {
+    return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
-      this.ua,
-      "get",
-      this.token
+      {
+        method: "get",
+        token: this.token,
+      }
     );
   }
 
   /**
-   * Create a new log on Lawg
+   * Create a new log
    * @param options
    * @returns Response Data
    */
   public async log(options: CreateLog): Promise<void> {
-    return await sendAPICall(
+    return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
-      this.ua,
-      "post",
-      this.token,
-      options
+      {
+        ua: this.ua,
+        method: "post",
+        token: this.token,
+        data: options,
+      }
     );
   }
 
   /**
-   * Edit an existing log on Lawg using an ID param or latest log ID
+   * Get an existing log
+   * @param options
+   * @returns Response Data
+   */
+  public async fetchLog(options: { id: string }): Promise<void> {
+    return await request(
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${options.id}`,
+      {
+        method: "get",
+        token: this.token,
+      }
+    );
+  }
+
+  /**
+   * Edit an existing log using an ID param or latest log ID
    * @param id
    * @param options
    * @returns Response Data
    */
-  public async editLog(id: string, options: UpdateLog): Promise<void> {
+  public async editLog(options: UpdateLog): Promise<void> {
+    const { id, ...data } = options;
     const determineId = id === "latest" ? this.latestLogId : id;
 
     if (id === "latest" && this.latestLogId === null) {
       throw new Error("No log ID available for editing. Create a log first.");
     }
 
-    return await sendAPICall(
+    return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${determineId}`,
-      this.ua,
-      "patch",
-      this.token,
-      options
+      {
+        method: "patch",
+        token: this.token,
+        data,
+      }
     );
   }
 
   /**
-   * Delete an existing log on Lawg using an ID param or latest log ID
+   * Delete an existing log using an ID param or latest log ID
    * @param id
    * @param options
    * @returns Response Data
    */
-  public async deleteLog(id: string): Promise<void> {
-    const determineId = id === "latest" ? this.latestLogId : id;
+  public async deleteLog(options: { id: string }): Promise<void> {
+    const determineId = options.id === "latest" ? this.latestLogId : options.id;
 
-    if (id === "latest" && this.latestLogId === null) {
+    if (options.id === "latest" && this.latestLogId === null) {
       throw new Error("No log ID available for editing. Create a log first.");
     }
 
-    return await sendAPICall(
+    return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${determineId}`,
-      this.ua,
-      "delete",
-      this.token
+      {
+        method: "delete",
+        token: this.token,
+      }
     );
   }
 }

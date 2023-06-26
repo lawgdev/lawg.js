@@ -28,3 +28,9 @@ export interface CreateInsight {
    */
   emoji?: string;
 }
+
+export interface UpdateInsight {
+  id?: string;
+  set?: string | number;
+  increment?: number;
+}
