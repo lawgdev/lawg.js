@@ -1,6 +1,6 @@
 {
   "name": "@lawgdev/js",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Lawg JS SDK",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -20,8 +20,8 @@
   },
   "scripts": {
     "build": "tsup --format cjs,esm --dts",
-    "release": "pnpm run test && pnpm run build",
-    "test": "jest --config jest.config.ts --forceExit"
+    "test": "jest --config jest.config.ts --forceExit",
+    "release": "yarn test && yarn build"
   },
   "repository": {
     "type": "git",

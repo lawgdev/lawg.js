@@ -42,7 +42,7 @@ export default class Feed {
    */
   public async event(options: CreateEvent): Promise<AxiosResponse> {
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events`,
       {
         ua: options.metadata?.ua ?? this.ua,
         method: "post",
@@ -59,7 +59,7 @@ export default class Feed {
    */
   public async fetchEvent(options: { id: string }): Promise<AxiosResponse> {
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${options.id}`,
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events/${options.id}`,
       {
         method: "get",
         token: this.token,
@@ -77,7 +77,7 @@ export default class Feed {
     const { id, ...data } = options;
 
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${id}`,
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events/${id}`,
       {
         method: "patch",
         token: this.token,
@@ -94,7 +94,7 @@ export default class Feed {
    */
   public async deleteEvent(options: { id: string }): Promise<AxiosResponse> {
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${options.id}`,
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events/${options.id}`,
       {
         method: "delete",
         token: this.token,
