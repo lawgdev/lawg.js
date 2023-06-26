@@ -1,12 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { CreateLog, UpdateLog } from "../types/log";
+import { CreateEvent, UpdateEvent } from "../types/event";
 import { CreateInsight } from "../types/insight";
 
 interface Options {
   ua?: string | undefined;
   method: "get" | "post" | "patch" | "delete";
   token: string;
-  data?: CreateLog | UpdateLog | CreateInsight | { value: { set?: string | number, increment?: number} };
+  data?: CreateEvent | UpdateEvent | CreateInsight | { value: { set?: string | number, increment?: number} };
 }
 export default async function request(
   url: string,

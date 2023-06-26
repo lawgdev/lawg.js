@@ -10,18 +10,18 @@ const lawg = new Lawg({
 });
 ```
 
-## Logs
+## Events
 
-### Fetching all Feed Logs
+### Fetching all Feed Events
 
 ```ts
-await lawg.feed("orders-shipped").fetchLogs();
+await lawg.feed("orders-shipped").fetchEvents();
 ```
 
-### Creating a Log
+### Creating a Event
 
 ```ts
-await lawg.feed("orders-shipped").log({
+await lawg.feed("orders-shipped").event({
   title: "Order Shipped",
   description: "John's order has been shipped! (Order #10403)",
   emoji: "🚚", // or :truck:
@@ -37,10 +37,10 @@ await lawg.feed("orders-shipped").log({
 });
 ```
 
-### Updating a Log
+### Updating a Event
 
 ```ts
-await lawg.feed("orders-shipped").editLog({
+await lawg.feed("orders-shipped").editEvent({
   id: "log_xxxxxxxxxxxxxx",
   title: "Order Returned",
   description:
@@ -56,10 +56,10 @@ await lawg.feed("orders-shipped").editLog({
 });
 ```
 
-### Deleting a Log
+### Deleting a Event
 
 ```ts
-await lawg.feed("orders-shipped").deleteLog({
+await lawg.feed("orders-shipped").deleteEvent({
   id: "log_xxxxxxxxxxxxxx",
 });
 ```

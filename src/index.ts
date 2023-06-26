@@ -1,3 +1,3 @@
 export * from "./client/lawg";
-export * from "./types/log";
+export * from "./types/event";
 export * from "./types/insight";

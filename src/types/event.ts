@@ -1,10 +1,10 @@
 export type Tags = { [key: string]: string | number };
 
 /**
- * Options for updating a Log
- * Identical to creating a log except all fields are optional
+ * Options for updating a Event
+ * Identical to creating a event except all fields are optional
  **/
-export interface UpdateLog {
+export interface UpdateEvent {
   id?: string;
   title?: string;
   description?: string;
@@ -17,23 +17,23 @@ export interface UpdateLog {
 }
 
 /**
- * Options for creating a Log
+ * Options for creating a Event
  **/
-export interface CreateLog {
+export interface CreateEvent {
   /**
-   * Log Title (Required)
+   * Event Title (Required)
    * example: "Order Created"
    */
   title: string;
 
   /**
-   * Log Title (Required)
+   * Event Title (Required)
    * example: "Order Created"
    */
   description?: string;
 
   /**
-   * Log Emoji (Optional)
+   * Event Emoji (Optional)
    * example: "🚀" or ":rocket:"
    */
   emoji?: string;
@@ -46,11 +46,11 @@ export interface CreateLog {
 
   metadata?: {
     /**
-     * Log User Agent (Optional)
+     * Event User Agent (Optional)
      */
     ua?: string;
     /**
-     * Log Tags (Optional)
+     * Event Tags (Optional)
      * example: { "customer-id": 123456 }
      */
     tags?: Tags;

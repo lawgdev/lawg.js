@@ -8,9 +8,9 @@ const lawg = new Lawg({
 
 const feed = process.env.LAWG_FEED as string;
 
-describe("Logs", () => {
-  test("Fetching all Feed Logs", async () => {
-    const logs = await lawg.feed(feed).fetchLogs();
+describe("Events", () => {
+  test("Fetching all Feed Events", async () => {
+    const logs = await lawg.feed(feed).fetchEvents();
 
     expect(logs).toEqual(
       expect.objectContaining({
@@ -20,8 +20,8 @@ describe("Logs", () => {
     );
   });
 
-  test("Creating a Log", async () => {
-    const createLog = await lawg.feed(feed).log({
+  test("Creating a Event", async () => {
+    const createEvent = await lawg.feed(feed).event({
       title: "Order Shipped",
       description: "John's order has been shipped! (Order #10403)",
       emoji: "🚚",
@@ -34,7 +34,7 @@ describe("Logs", () => {
       notify: true,
     });
 
-    expect(createLog).toEqual(
+    expect(createEvent).toEqual(
       expect.objectContaining({
         success: true,
         data: expect.any(Object),
@@ -42,11 +42,11 @@ describe("Logs", () => {
     );
   });
 
-  test("Editing a Log", async () => {
+  test("Editing a Event", async () => {
     // TODO
   });
 
-  test("Deleting a Log", async () => {
+  test("Deleting a Event", async () => {
     // TODO
   });
 });

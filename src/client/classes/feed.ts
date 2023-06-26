@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { LAWG_API_URL } from "../../lib/constants";
-import { CreateLog, UpdateLog } from "../../types/log";
+import { CreateEvent, UpdateEvent } from "../../types/event";
 import request from "../../utils/request";
 
 export default class Feed {
@@ -22,12 +22,12 @@ export default class Feed {
   }
 
   /**
-   * Get all logs of a feed
+   * Get all events of a feed
    * @returns Response Data
    */
-  public async fetchLogs(): Promise<AxiosResponse> {
+  public async fetchEvents(): Promise<AxiosResponse> {
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
+      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events`,
       {
         method: "get",
         token: this.token,
@@ -36,11 +36,11 @@ export default class Feed {
   }
 
   /**
-   * Create a new log
+   * Create a new event
    * @param options
    * @returns Response Data
    */
-  public async log(options: CreateLog): Promise<AxiosResponse> {
+  public async event(options: CreateEvent): Promise<AxiosResponse> {
     return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs`,
       {
@@ -53,11 +53,11 @@ export default class Feed {
   }
 
   /**
-   * Get an existing log
+   * Get an existing event
    * @param options
    * @returns Response Data
    */
-  public async fetchLog(options: { id: string }): Promise<AxiosResponse> {
+  public async fetchEvent(options: { id: string }): Promise<AxiosResponse> {
     return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${options.id}`,
       {
@@ -68,12 +68,12 @@ export default class Feed {
   }
 
   /**
-   * Edit an existing log using an ID param or latest log ID
+   * Edit an existing event using an ID param or latest event ID
    * @param id
    * @param options
    * @returns Response Data
    */
-  public async editLog(options: UpdateLog): Promise<AxiosResponse> {
+  public async editEvent(options: UpdateEvent): Promise<AxiosResponse> {
     const { id, ...data } = options;
 
     return await request(
@@ -87,12 +87,12 @@ export default class Feed {
   }
 
   /**
-   * Delete an existing log using an ID param or latest log ID
+   * Delete an existing event using an ID param or latest event ID
    * @param id
    * @param options
    * @returns Response Data
    */
-  public async deleteLog(options: { id: string }): Promise<AxiosResponse> {
+  public async deleteEvent(options: { id: string }): Promise<AxiosResponse> {
     return await request(
       `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/logs/${options.id}`,
       {
