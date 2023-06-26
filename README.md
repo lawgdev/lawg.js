@@ -1,6 +1,7 @@
 # lawg.js
 
 ### Initialization
+
 ```ts
 const lawg = new Lawg({
   token: process.env.LAWG_TOKEN,
@@ -11,29 +12,50 @@ const lawg = new Lawg({
 
 ## Logs
 
+### Fetching all Feed Logs
+
+```ts
+await lawg.feed("orders-shipped").fetchLogs();
+```
+
 ### Creating a Log
+
 ```ts
 await lawg.feed("orders-shipped").log({
   title: "Order Shipped",
   description: "John's order has been shipped! (Order #10403)",
-  emoji: "🚚" // or :truck:
-  tags: {
+  emoji: "🚚", // or :truck:
+  metadata: {
+    ua: req.headers["user-agent"], // Optional
+    tags: {
     "customer-id": 1234,
     "customer-email": "johnny@lawg.dev"
   } // Optional
+  }
   notify: true, // Optional (default false)
 });
 ```
 
 ### Editing a Log
-// TODO
+
+```ts
+await lawg.feed("orders-shipped").editLog({
+  id: "log_xxxxxxxxxxxxxx",
+});
+```
 
 ### Deleting a Log
-// TODO
+
+```ts
+await lawg.feed("orders-shipped").deleteLog({
+  id: "log_xxxxxxxxxxxxxx",
+});
+```
 
 ## Insights
 
 ### Creating a Insight
+
 ```ts
 await lawg.insight({
   title: "Users Joined",
@@ -42,4 +64,11 @@ await lawg.insight({
 ```
 
 ### Updating a Insight
+
+#### Setting a Insight's Value
+
+// TODO
+
+#### Incrementing a Insight
+
 // TODO

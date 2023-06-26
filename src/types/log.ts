@@ -46,6 +46,10 @@ export interface CreateLog {
 
   metadata?: {
     /**
+     * Log User Agent (Optional)
+     */
+    ua?: string;
+    /**
      * Log Tags (Optional)
      * example: { "customer-id": 123456 }
      */
