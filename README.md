@@ -33,6 +33,7 @@ await lawg.feed("orders-shipped").log({
     }, // Optional
   },
   notify: true, // Optional (defaults to false)
+  timestamp: "2023-06-22T13:42:55.789Z", // Optional
 });
 ```
 
@@ -51,7 +52,7 @@ await lawg.feed("orders-shipped").editLog({
       "customer-email": "johnathan@lawg.dev",
     }, // Optional
   },
-  timestamp: "2023-06-22T13:42:55.789Z", // Optional
+  timestamp: "2023-06-15T13:42:55.789Z", // Optional
 });
 ```
 
