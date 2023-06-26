@@ -1,4 +1,4 @@
-import Lawg from "../../src/client/lawg";
+import Lawg from "../src/client/lawg";
 import "dotenv/config";
 
 const lawg = new Lawg({
