@@ -28,11 +28,11 @@ await lawg.feed("orders-shipped").log({
   metadata: {
     ua: req.headers["user-agent"], // Optional
     tags: {
-    "customer-id": 1234,
-    "customer-email": "johnny@lawg.dev"
-  } // Optional
-  }
-  notify: true, // Optional (default false)
+      "customer-id": 1234,
+      "customer-email": "johnny@lawg.dev",
+    }, // Optional
+  },
+  notify: true, // Optional (defaults to false)
 });
 ```
 
@@ -67,8 +67,18 @@ await lawg.insight({
 
 #### Setting a Insight's Value
 
-// TODO
+```ts
+await lawg.setInsight({
+  id: "insight_xxxxxxxxxxxxxx",
+  set: 150, // Overides initial value (Now: 150, Before: 250)
+});
+```
 
 #### Incrementing a Insight
 
-// TODO
+```ts
+await lawg.incInsight({
+  id: "insight_xxxxxxxxxxxxxx",
+  increment: 150, // Increments initial value (Now: 400, Before: 250)
+});
+```
