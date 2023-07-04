@@ -1,7 +1,6 @@
 import { AxiosResponse } from "axios";
-import { LAWG_API_URL } from "../../lib/constants";
-import { CreateEvent, UpdateEvent } from "../../types/event";
-import request from "../../utils/request";
+import { CreateEvent, UpdateEvent } from "../types/event";
+import request from "../utils/request";
 
 export default class Feed {
   private readonly token: string;
@@ -27,7 +26,7 @@ export default class Feed {
    */
   public async fetchEvents(): Promise<AxiosResponse> {
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events`,
+      `projects/${this.project}/feeds/${this.feedName}/events`,
       {
         method: "get",
         token: this.token,
@@ -42,7 +41,7 @@ export default class Feed {
    */
   public async event(options: CreateEvent): Promise<AxiosResponse> {
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events`,
+      `projects/${this.project}/feeds/${this.feedName}/events`,
       {
         ua: options.metadata?.ua ?? this.ua,
         method: "post",
@@ -59,7 +58,7 @@ export default class Feed {
    */
   public async fetchEvent(options: { id: string }): Promise<AxiosResponse> {
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events/${options.id}`,
+      `projects/${this.project}/feeds/${this.feedName}/events/${options.id}`,
       {
         method: "get",
         token: this.token,
@@ -77,7 +76,7 @@ export default class Feed {
     const { id, ...data } = options;
 
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events/${id}`,
+      `projects/${this.project}/feeds/${this.feedName}/events/${id}`,
       {
         method: "patch",
         token: this.token,
@@ -94,7 +93,7 @@ export default class Feed {
    */
   public async deleteEvent(options: { id: string }): Promise<AxiosResponse> {
     return await request(
-      `${LAWG_API_URL}/projects/${this.project}/feeds/${this.feedName}/events/${options.id}`,
+      `projects/${this.project}/feeds/${this.feedName}/events/${options.id}`,
       {
         method: "delete",
         token: this.token,

@@ -1,23 +1,20 @@
 import { AxiosResponse } from "axios";
-import { LAWG_API_URL } from "../lib/constants";
 import { CreateInsight, UpdateInsight } from "../types/insight";
 import request from "../utils/request";
-import Feed from "./classes/feed";
+import Feed from "./feed";
+
+interface LawgOptions {
+  token: string;
+  project: string;
+  ua?: string;
+}
 
 export default class Lawg {
   private readonly token: string;
   private readonly project: string;
   private readonly ua?: string;
 
-  constructor({
-    token,
-    project,
-    ua,
-  }: {
-    token: string;
-    project: string;
-    ua?: string;
-  }) {
+  constructor({ token, project, ua }: LawgOptions) {
     this.token = token;
     this.project = project;
     this.ua = ua;
@@ -33,7 +30,7 @@ export default class Lawg {
    * @returns Response Data
    */
   public async insight(options: CreateInsight): Promise<AxiosResponse> {
-    return await request(`${LAWG_API_URL}/projects/${this.project}/insights`, {
+    return await request<CreateInsight>(`projects/${this.project}/insights`, {
       method: "post",
       token: this.token,
       data: options,
@@ -46,8 +43,8 @@ export default class Lawg {
    * @returns Response Data
    */
   public async setInsight(options: UpdateInsight): Promise<AxiosResponse> {
-    return await request(
-      `${LAWG_API_URL}/projects/${this.project}/insights/${options.id}`,
+    return await request<{ value: { set?: string | number } }>(
+      `projects/${this.project}/insights/${options.id}`,
       {
         method: "patch",
         token: this.token,
@@ -66,8 +63,8 @@ export default class Lawg {
    * @returns Response Data
    */
   public async incInsight(options: UpdateInsight): Promise<AxiosResponse> {
-    return await request(
-      `${LAWG_API_URL}/projects/${this.project}/insights/${options.id}`,
+    return await request<{ value: { increment?: number } }>(
+      `projects/${this.project}/insights/${options.id}`,
       {
         method: "patch",
         token: this.token,
@@ -86,8 +83,8 @@ export default class Lawg {
    * @returns Response Data
    */
   public async deleteInsight(options: { id: string }): Promise<AxiosResponse> {
-    return await request(
-      `${LAWG_API_URL}/projects/${this.project}/insights/${options.id}`,
+    return await request<AxiosResponse>(
+      `projects/${this.project}/insights/${options.id}`,
       {
         method: "delete",
         token: this.token,

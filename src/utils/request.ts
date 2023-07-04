@@ -1,19 +1,20 @@
 import axios, { AxiosResponse } from "axios";
-import { CreateEvent, UpdateEvent } from "../types/event";
-import { CreateInsight } from "../types/insight";
 
-interface Options {
+interface Options<T> {
   ua?: string | undefined;
   method: "get" | "post" | "patch" | "delete";
   token: string;
-  data?: CreateEvent | UpdateEvent | CreateInsight | { value: { set?: string | number, increment?: number} };
+  data?: T;
 }
-export default async function request(
+
+const LAWG_API_URL = "http://100.105.87.12:8080/v1";
+
+export default async function request<T>(
   url: string,
-  options: Options
-): Promise<AxiosResponse> {
+  options: Options<T>
+): Promise<AxiosResponse<T>> {
   return await axios({
-    url,
+    url: `${LAWG_API_URL}/${url}`,
     method: options.method,
     headers: {
       "Content-Type": "application/json",
