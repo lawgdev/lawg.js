@@ -83,12 +83,9 @@ export default class Lawg {
    * @returns Response Data
    */
   public async deleteInsight(options: { id: string }): Promise<AxiosResponse> {
-    return await request<AxiosResponse>(
-      `projects/${this.project}/insights/${options.id}`,
-      {
-        method: "delete",
-        token: this.token,
-      }
-    );
+    return await request(`projects/${this.project}/insights/${options.id}`, {
+      method: "delete",
+      token: this.token,
+    });
   }
 }
