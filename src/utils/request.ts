@@ -7,7 +7,7 @@ interface Options<T> {
   data?: T;
 }
 
-const LAWG_API_URL = "http://100.105.87.12:8080/v1";
+const LAWG_API_URL = "https://api.lawg.dev/v1";
 
 export default async function request<T>(
   url: string,
