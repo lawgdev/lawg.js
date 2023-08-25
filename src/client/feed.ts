@@ -1,22 +1,16 @@
-import { AxiosResponse } from "axios";
-import { CreateEvent, UpdateEvent } from "../types/event";
-import request from "../utils/request";
+import { z } from "zod";
+import { Id } from "../types";
+import { Event as IEvent } from "../types/event";
+import { createEventSchema, patchEventSchema } from "../utils/schemas/event";
+import { Base } from "./base";
+import { Event } from "./event";
+import Lawg from "./lawg";
 
-export default class Feed {
-  private readonly token: string;
-  private readonly project: string;
-  private readonly ua: string | undefined;
+export default class Feed extends Base {
   private readonly feedName: string;
 
-  constructor(
-    token: string,
-    project: string,
-    feedName: string,
-    ua: string | undefined
-  ) {
-    this.token = token;
-    this.project = project;
-    this.ua = ua;
+  constructor(client: Lawg, feedName: string) {
+    super(client);
     this.feedName = feedName;
   }
 
@@ -24,80 +18,72 @@ export default class Feed {
    * Get all events of a feed
    * @returns Response Data
    */
-  public async fetchEvents(): Promise<AxiosResponse> {
-    return await request(
-      `projects/${this.project}/feeds/${this.feedName}/events`,
-      {
-        method: "get",
-        token: this.token,
-      }
+  public async fetchEvents(): Promise<Event[]> {
+    const { success, data, error } = await this.client.rest<IEvent[]>(
+      "get",
+      `/projects/${this.client.project}/feeds/${this.feedName}/events`
     );
+
+    if (!success || !data) {
+      throw new Error(`Failed to fetch events ${error?.message}`);
+    }
+
+    return data?.map((event) => new Event(this.client, this.feedName, event));
   }
 
-  /**
-   * Create a new event
-   * @param options
-   * @returns Response Data
-   */
-  public async event(options: CreateEvent): Promise<AxiosResponse> {
-    return await request(
-      `projects/${this.project}/feeds/${this.feedName}/events`,
-      {
-        ua: options.metadata?.ua ?? this.ua,
-        method: "post",
-        token: this.token,
-        data: options,
-      }
+  public async fetchEvent(id: Id<"event">): Promise<Event> {
+    const { success, data, error } = await this.client.rest<IEvent>(
+      "get",
+      `/projects/${this.client.project}/feeds/${this.feedName}/events/${id}`
     );
+
+    if (!success || !data) {
+      throw new Error(`Failed to fetch event ${error?.message}`);
+    }
+
+    return new Event(this.client, this.feedName, data);
   }
 
-  /**
-   * Get an existing event
-   * @param options
-   * @returns Response Data
-   */
-  public async fetchEvent(options: { id: string }): Promise<AxiosResponse> {
-    return await request(
-      `projects/${this.project}/feeds/${this.feedName}/events/${options.id}`,
-      {
-        method: "get",
-        token: this.token,
-      }
+  public async createEvent(event: z.infer<typeof createEventSchema>) {
+    const { success, data, error } = await this.client.rest<IEvent>(
+      "post",
+      `/projects/${this.client.project}/feeds/${this.feedName}/events`,
+      event
     );
+
+    if (!success || !data) {
+      throw new Error(`Failed to create event ${error?.message}`);
+    }
+
+    return new Event(this.client, this.feedName, data);
   }
 
-  /**
-   * Edit an existing event using an ID param or latest event ID
-   * @param id
-   * @param options
-   * @returns Response Data
-   */
-  public async editEvent(options: UpdateEvent): Promise<AxiosResponse> {
-    const { id, ...data } = options;
-
-    return await request(
-      `projects/${this.project}/feeds/${this.feedName}/events/${id}`,
-      {
-        method: "patch",
-        token: this.token,
-        data,
-      }
+  public async updateEvent(
+    event: z.infer<typeof patchEventSchema> & { id: Id<"event"> }
+  ) {
+    const { success, data, error } = await this.client.rest<IEvent>(
+      "patch",
+      `/projects/${this.client.project}/feeds/${this.feedName}/events/${event.id}`,
+      event
     );
+
+    if (!success || !data) {
+      throw new Error(`Failed to update event ${error?.message}`);
+    }
+
+    return new Event(this.client, this.feedName, data);
   }
 
-  /**
-   * Delete an existing event using an ID param or latest event ID
-   * @param id
-   * @param options
-   * @returns Response Data
-   */
-  public async deleteEvent(options: { id: string }): Promise<AxiosResponse> {
-    return await request(
-      `projects/${this.project}/feeds/${this.feedName}/events/${options.id}`,
-      {
-        method: "delete",
-        token: this.token,
-      }
+  public async deleteEvent(id: Id<"event">) {
+    const { success, error } = await this.client.rest(
+      "delete",
+      `/projects/${this.client.project}/feeds/${this.feedName}/events/${id}`
     );
+
+    if (!success) {
+      throw new Error(`Failed to delete event ${error?.message}`);
+    }
+
+    return true;
   }
 }
