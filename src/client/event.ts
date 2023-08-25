@@ -12,21 +12,27 @@ export class Event extends Base {
     this.raw = event;
   }
 
-  public async deleteEvent() {
-    return await this.client.rest<never>(
+  public async delete(): Promise<boolean> {
+    const { success, error } = await this.client.rest<never>(
       "delete",
       `/projects/${this.client.project}/feeds/${this.feedName}/events/${this.raw.id}`
     );
+
+    if (!success) {
+      throw new Error(`Failed to delete event ${error?.message}`);
+    }
+
+    return true;
   }
 
-  public async updateEvent(
+  public async update(
     options: Partial<{
       name: string;
       description: string;
       emoji: string;
       metadata: EventMetadata;
     }>
-  ) {
+  ): Promise<Event> {
     const { success, data, error } = await this.client.rest<IEvent>(
       "patch",
       `/projects/${this.client.project}/feeds/${this.feedName}/events/${this.raw.id}`,

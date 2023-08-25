@@ -14,10 +14,6 @@ export default class Feed extends Base {
     this.feedName = feedName;
   }
 
-  /**
-   * Get all events of a feed
-   * @returns Response Data
-   */
   public async fetchEvents(): Promise<Event[]> {
     const { success, data, error } = await this.client.rest<IEvent[]>(
       "get",
@@ -44,7 +40,9 @@ export default class Feed extends Base {
     return new Event(this.client, this.feedName, data);
   }
 
-  public async createEvent(event: z.infer<typeof createEventSchema>) {
+  public async createEvent(
+    event: z.infer<typeof createEventSchema>
+  ): Promise<Event> {
     const { success, data, error } = await this.client.rest<IEvent>(
       "post",
       `/projects/${this.client.project}/feeds/${this.feedName}/events`,
@@ -60,7 +58,7 @@ export default class Feed extends Base {
 
   public async updateEvent(
     event: z.infer<typeof patchEventSchema> & { id: Id<"event"> }
-  ) {
+  ): Promise<Event> {
     const { success, data, error } = await this.client.rest<IEvent>(
       "patch",
       `/projects/${this.client.project}/feeds/${this.feedName}/events/${event.id}`,
@@ -74,7 +72,7 @@ export default class Feed extends Base {
     return new Event(this.client, this.feedName, data);
   }
 
-  public async deleteEvent(id: Id<"event">) {
+  public async deleteEvent(id: Id<"event">): Promise<boolean> {
     const { success, error } = await this.client.rest(
       "delete",
       `/projects/${this.client.project}/feeds/${this.feedName}/events/${id}`
