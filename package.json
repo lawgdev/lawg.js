@@ -6,6 +6,7 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@onehop/json-methods": "^1.2.0",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
     "jest": "^29.5.0",

@@ -5,9 +5,9 @@ import { Log as ILog } from "../types/log";
 import { createEventSchema, patchEventSchema } from "../utils/schemas/event";
 import { createLogSchema } from "../utils/schemas/log";
 import { Base } from "./base";
-import { Event } from "./event";
+import { Events } from "./events";
 import Lawg from "./lawg";
-import { Log } from "./log";
+import { Logs } from "./logs";
 
 export default class Feed extends Base {
   private readonly feedName: string;
@@ -17,7 +17,7 @@ export default class Feed extends Base {
     this.feedName = feedName;
   }
 
-  public async fetchEvents(): Promise<Event[]> {
+  public async fetchEvents() {
     const { success, data, error } = await this.client.rest<IEvent[]>(
       "get",
       `/projects/${this.client.project}/feeds/${this.feedName}/events`
@@ -27,10 +27,12 @@ export default class Feed extends Base {
       throw new Error(`Failed to fetch events ${error?.message}`);
     }
 
-    return data?.map((event) => new Event(this.client, this.feedName, event));
+    return data?.map((event) =>
+      Events.from({ ...event, client: this.client, feedName: this.feedName })
+    );
   }
 
-  public async fetchEvent(id: Id<"event">): Promise<Event> {
+  public async fetchEvent(id: Id<"event">) {
     const { success, data, error } = await this.client.rest<IEvent>(
       "get",
       `/projects/${this.client.project}/feeds/${this.feedName}/events/${id}`
@@ -40,12 +42,14 @@ export default class Feed extends Base {
       throw new Error(`Failed to fetch event ${error?.message}`);
     }
 
-    return new Event(this.client, this.feedName, data);
+    return Events.from({
+      ...data,
+      client: this.client,
+      feedName: this.feedName,
+    });
   }
 
-  public async createEvent(
-    event: z.infer<typeof createEventSchema>
-  ): Promise<Event> {
+  public async createEvent(event: z.infer<typeof createEventSchema>) {
     const { success, data, error } = await this.client.rest<IEvent>(
       "post",
       `/projects/${this.client.project}/feeds/${this.feedName}/events`,
@@ -56,12 +60,16 @@ export default class Feed extends Base {
       throw new Error(`Failed to create event ${error?.message}`);
     }
 
-    return new Event(this.client, this.feedName, data);
+    return Events.from({
+      ...data,
+      client: this.client,
+      feedName: this.feedName,
+    });
   }
 
   public async updateEvent(
     event: z.infer<typeof patchEventSchema> & { id: Id<"event"> }
-  ): Promise<Event> {
+  ) {
     const { success, data, error } = await this.client.rest<IEvent>(
       "patch",
       `/projects/${this.client.project}/feeds/${this.feedName}/events/${event.id}`,
@@ -72,7 +80,11 @@ export default class Feed extends Base {
       throw new Error(`Failed to update event ${error?.message}`);
     }
 
-    return new Event(this.client, this.feedName, data);
+    return Events.from({
+      ...data,
+      client: this.client,
+      feedName: this.feedName,
+    });
   }
 
   public async deleteEvent(id: Id<"event">): Promise<boolean> {
@@ -88,7 +100,7 @@ export default class Feed extends Base {
     return true;
   }
 
-  public async createLog(log: z.infer<typeof createLogSchema>): Promise<Log> {
+  public async createLog(log: z.infer<typeof createLogSchema>) {
     const { success, data, error } = await this.client.rest<ILog>(
       "post",
       `/projects/${this.client.project}/feeds/${this.feedName}/logs`,
@@ -99,10 +111,10 @@ export default class Feed extends Base {
       throw new Error(`Failed to create log ${error?.message}`);
     }
 
-    return new Log(this.client, this.feedName, data);
+    return Logs.from({ ...data, client: this.client, feedName: this.feedName });
   }
 
-  public async fetchLogs(): Promise<Log[]> {
+  public async fetchLogs() {
     const { success, data, error } = await this.client.rest<ILog[]>(
       "get",
       `/projects/${this.client.project}/feeds/${this.feedName}/logs`
@@ -112,7 +124,9 @@ export default class Feed extends Base {
       throw new Error(`Failed to fetch logs ${error?.message}`);
     }
 
-    return data?.map((log) => new Log(this.client, this.feedName, log));
+    return data?.map((log) =>
+      Logs.from({ ...log, client: this.client, feedName: this.feedName })
+    );
   }
 
   public async deleteLog(id: Id<"log">): Promise<boolean> {

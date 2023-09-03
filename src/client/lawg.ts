@@ -23,7 +23,7 @@ export default class Lawg {
     this.project = project;
   }
 
-  public feed(feedName: string): Feed {
+  public feed(feedName: string) {
     return new Feed(this, feedName);
   }
 }

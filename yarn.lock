@@ -695,6 +695,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@onehop/json-methods@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@onehop/json-methods/-/json-methods-1.2.0.tgz#cb5d898f80e7e18fbf10bbae46991e3fc4c0439a"
+  integrity sha512-WbCPr9pejwncugqXvCrWQu974fU+AYz8fw3N6igLY2blEMwZvyv1fpcGjdRh+ILtY1msvFeNCPwH1Ej7/XsEig==
+
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"

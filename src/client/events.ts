@@ -1,21 +1,17 @@
+import { create } from "@onehop/json-methods";
 import { EventMetadata, Event as IEvent } from "../types/event";
-import { Base } from "./base";
 import Lawg from "./lawg";
 
-export class Event extends Base {
-  public raw: IEvent;
-  private readonly feedName: string;
-
-  constructor(client: Lawg, feedName: string, event: IEvent) {
-    super(client);
-    this.feedName = feedName;
-    this.raw = event;
+export const Events = create<
+  IEvent & {
+    client: Lawg;
+    feedName: string;
   }
-
-  public async delete(): Promise<boolean> {
+>().methods({
+  async delete() {
     const { success, error } = await this.client.rest<never>(
       "delete",
-      `/projects/${this.client.project}/feeds/${this.feedName}/events/${this.raw.id}`
+      `/projects/${this.client.project}/feeds/${this.feedName}/events/${this.id}`
     );
 
     if (!success) {
@@ -23,19 +19,19 @@ export class Event extends Base {
     }
 
     return true;
-  }
+  },
 
-  public async update(
+  async update(
     options: Partial<{
-      name: string;
+      title: string;
       description: string;
       emoji: string;
       metadata: EventMetadata;
     }>
-  ): Promise<Event> {
+  ) {
     const { success, data, error } = await this.client.rest<IEvent>(
       "patch",
-      `/projects/${this.client.project}/feeds/${this.feedName}/events/${this.raw.id}`,
+      `/projects/${this.client.project}/feeds/${this.feedName}/events/${this.id}`,
       options
     );
 
@@ -43,8 +39,11 @@ export class Event extends Base {
       throw new Error(`Failed to update event ${error?.message}`);
     }
 
-    this.raw = data;
+    this.title ??= data.title;
+    this.description ??= data.description;
+    this.emoji ??= data.emoji;
+    this.metadata ??= data.metadata;
 
     return this;
-  }
-}
+  },
+});

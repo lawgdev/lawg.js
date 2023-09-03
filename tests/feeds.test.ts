@@ -26,17 +26,17 @@ describe("Events", () => {
       notify: true,
     });
 
-    expect(createEvent.raw.title).toBe("Order Shipped");
-    expect(createEvent.raw.description).toBe(
+    expect(createEvent.title).toBe("Order Shipped");
+    expect(createEvent.description).toBe(
       "John's order has been shipped! (Order #10403)"
     );
-    expect(createEvent.raw.emoji).toBe("🚚");
-    expect(createEvent.raw.metadata.tags).toStrictEqual({
+    expect(createEvent.emoji).toBe("🚚");
+    expect(createEvent.metadata.tags).toStrictEqual({
       "customer-id": 1234,
       "customer-email": "johnny@lawg.dev",
     });
 
-    createdEvent = createEvent.raw;
+    createdEvent = createEvent;
   });
 
   test("Fetching all Feed Events", async () => {
@@ -48,7 +48,7 @@ describe("Events", () => {
   test("Fetch event", async () => {
     const event = await lawg.feed(EVENT_FEED).fetchEvent(createdEvent.id);
 
-    expect(event.raw).toStrictEqual(createdEvent);
+    expect(event).toStrictEqual(createdEvent);
   });
 
   test("Editing an Event", async () => {
@@ -57,7 +57,7 @@ describe("Events", () => {
       description: "John's order has been shipped! (Order #10405)",
     });
 
-    expect(event.raw.description).toBe(
+    expect(event.description).toBe(
       "John's order has been shipped! (Order #10405)"
     );
   });
@@ -78,10 +78,10 @@ describe("Logs", () => {
       level: "info",
     });
 
-    expect(createLog.raw.message).toBe("Order #10403 has been shipped!");
-    expect(createLog.raw.level).toBe(LogLevel.INFO);
+    expect(createLog.message).toBe("Order #10403 has been shipped!");
+    expect(createLog.level).toBe(LogLevel.INFO);
 
-    createdLog = createLog.raw;
+    createdLog = createLog;
   });
 
   test("Fetching all Feed Logs", async () => {
